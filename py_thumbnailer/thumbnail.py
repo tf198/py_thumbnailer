@@ -1,11 +1,12 @@
 import mimetypes
 import re
+from six import string_types
 
 from . import exceptions, thumbnailers
 
 
 def create_thumbnail(source_file, resize_to=None):
-    if isinstance(source_file, basestring):
+    if isinstance(source_file, string_types):
         source_file = open(source_file, 'rb')
 
     mime_type, encoding = mimetypes.guess_type(source_file.name, strict=False)
@@ -62,7 +63,7 @@ mimetypes_by_extension = {
 def thumbnailer_for(mime_type):
     thumbnailer_class = thumbnailers_by_mimetype.get(mime_type)
     if thumbnailer_class is None:
-        regex_thumbnailers = filter(lambda key: not isinstance(key, basestring), thumbnailers_by_mimetype)
+        regex_thumbnailers = filter(lambda key: not isinstance(key, string_types), thumbnailers_by_mimetype)
         for regex in regex_thumbnailers:
             if regex.match(mime_type):
                 thumbnailer_class = thumbnailers_by_mimetype[regex]
