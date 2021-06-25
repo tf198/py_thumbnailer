@@ -56,7 +56,7 @@ class PDFThumbnailer(Thumbnailer):
         args = [cls.executable, '-jpeg']
         if resize_to:
             args += ['-scale-to', str(resize_to)]
-        args += ['-f', '1', '-l', '1']
+        args += ['-f', '1', '-l', '1', '-cropbox']
         return args
 
 
