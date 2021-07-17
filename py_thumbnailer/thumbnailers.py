@@ -70,8 +70,12 @@ class ImageThumbnailer(Thumbnailer):
         im = Image.open(source_file)
         if resize_to:
             im.thumbnail((resize_to, resize_to))
+        if im.mode == 'RGBA':
+            blank = Image.new("RGB", im.size, (255, 255, 255))
+            blank.paste(im, mask=im.split()[3]) # 3 is the alpha channel
+            im = blank
         output = BytesIO()
-        im.save(output, format='jpeg', quality=100)
+        im.save(output, format='jpeg', quality=80)
         output.seek(0)
         return output
 
